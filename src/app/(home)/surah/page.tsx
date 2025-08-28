@@ -1,12 +1,12 @@
 import React from "react";
 import { getAllSurat } from "@/lib/api";
 import SearchBar from "@/components/search-bar";
+
 import type { Surah } from "@/types/quran";
 import { Container } from "@/components/layout/container";
-import { HeroSection } from "@/components/hero-section";
-import { InfoBanner } from "@/components/info-banner";
+import RandomAyatBanner from "@/components/shared/random-ayat-banner";
 
-export default async function HomePage() {
+export default async function SurahPage() {
 	let surahData: Surah[] = [];
 
 	try {
@@ -18,9 +18,9 @@ export default async function HomePage() {
 
 	return (
 		<Container>
-			<div className="space-y-8 py-10">
-				<InfoBanner />
-				<HeroSection />
+			<div className="py-10 space-y-10">
+				<RandomAyatBanner />
+
 				<SearchBar initialSurahList={surahData} />
 			</div>
 		</Container>

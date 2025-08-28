@@ -1,0 +1,78 @@
+oke untuk phase 1.5 sudah done dan aku sedikit improvisasi src/app/layout.tsx
+menjadi
+
+import type { Metadata } from "next";
+import "./globals.css";
+import { Navbar } from "@/components/layout/navbar";
+import { Footer } from "@/components/layout/footer";
+import { Inter } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
+
+const inter = Inter({ subsets: ["latin"] });
+
+export const metadata: Metadata = {
+	title: "QuranApp",
+	description:
+		"Quran Web App with Surah, Tafsir, Audio Player, and Bookmarks",
+};
+
+export default function RootLayout({
+	children,
+}: Readonly<{
+	children: React.ReactNode;
+}>) {
+	return (
+		<html lang="en" suppressHydrationWarning>
+			<body className={`${inter.className} flex min-h-screen flex-col`}>
+				<ThemeProvider
+					attribute="class"
+					defaultTheme="system"
+					enableSystem>
+					<Navbar />
+					<main className="flex-1">{children}</main>
+					<Footer />
+				</ThemeProvider>
+			</body>
+		</html>
+	);
+}
+
+jadi kuharap nanti kamu ingat agar tidak conflict, oke selanjutnya kita persaipa untuk phase 2 
+"""
+Phase 2 — API Layer & Types
+Tujuan: typed wrapper untuk equran.id API, reusable types, error handling.
+Install: none extra (we have fetch builtin). Optionally axios if prefer.
+File utama:
+•	lib/types.ts, lib/api.ts (getAllSurat, getSurat, getTafsir), .env.local with NEXT_PUBLIC_EQURAN_BASE=https://equran.id/api/v2
+Acceptance:
+•	Calling getAllSurat() in a server component returns typed data (no runtime error), show sample data in UI (skeleton).
+
+""", seperti sebelumnya strukturnya seperti itu dan strukturnya dikembangkan dari yang sebelumnya
+pastika code yang kamu berikan profesional dan sesuai best practice, dan teteap mengikuti sebelumnya jadi continue, oke mulai seperti tadi, penejlasan struktur apa yang akan dikerjakn installasi dan tahapan pengeerjaan, aku ingin menegaskan lagi untuk selalu mengerjakan dengan komplit lengkap best practice dan profesional
+
+
+
+---------------------------------------------------------------------------------------------------
+
+
+
+oke nice untuk phase 3 dan 3.5 untuk enhanche sdah berjalan sangat baik sebagai catatan untuk kedepannya icon selalu pakai lucide react oke. dan seakrang kia masuk ke phase 4 """
+Phase 4 — Surah detail page (server) + ayat rendering
+Tujuan: dynamic route /surah/[id], use SSG/ISR, render ayat list, toggles transliteration/translation.
+Components:
+•	app/surah/[id]/page.tsx (server), components/surah/AyatCard.tsx (client), components/surah/TafsirModal.tsx
+Acceptance:
+•	Page render with data, ayat cards show Arabic + translation, Tafsir modal opens and fetches on demand.
+"""
+seperti sebelumnya strukturnya seperti itu dan strukturnya dikembangkan dari yang sebelumnya
+pastika code yang kamu berikan profesional dan sesuai best practice, dan tetap mengikuti sebelumnya jadi continue, oke mulai seperti tadi, penejlasan struktur apa yang akan dikerjakn installasi dan tahapan pengeerjaan, aku ingin menegaskan lagi untuk selalu mengerjakan dengan komplit lengkap best practice dan profesional
+
+jadi nanti kamu bisa siapin juga untuk sidebarnya khusus di surah/[id] dan untuk contoh sidebar (desktop seperti gambar tersemat) aku mau fiturnya seperti yang ada digambar, untuk font gunakan amiri quran, lalu siapkan juga untuk playernya nanti persurah atau full, jik persurah seperti anchor, setelah audio ayah 1 selesai ayah 2 otomatis terputar dan menggulir ke ayah 2
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+oke udah nice banget tapi ada satu kendala minor di tafsir """ 1:1 Access to fetch at 'https://equran.id/api/v2/tafsir/1' from origin 'http://localhost:3000' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.""" dan ada satu warning """ Error: Route "/surah/[id]" used params.id. params should be awaited before using its properties. Learn more: """ coba hanya buah dan berikan penjelasan struktur bagian saja mana file yang dirubah dan kenapa.
