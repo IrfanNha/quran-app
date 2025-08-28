@@ -6,6 +6,7 @@ import { Poppins, Scheherazade_New, Amiri_Quran } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AudioProvider } from "@/components/audio/audio-provider";
 import { AudioBanner } from "@/components/audio/audio-banner";
+import { Analytics } from "@vercel/analytics/react";
 import { VercelAnalyticsTracker } from "@/components/analytics/vercel-analytics";
 
 const poppins = Poppins({
@@ -71,6 +72,7 @@ export default function RootLayout({
 					defaultTheme="system"
 					enableSystem>
 					<AudioProvider>
+						<Analytics />
 						<VercelAnalyticsTracker />{" "}
 						{/* << Track SPA navigation */}
 						<Navbar />
