@@ -8,9 +8,17 @@ import { BookOpen, MapPin } from "lucide-react";
 
 export const revalidate = 86400;
 
+type SurahSummary = {
+	nomor: number;
+	nama: string;
+	namaLatin: string;
+	jumlahAyat: number;
+	tempatTurun: string;
+};
+
 export async function generateStaticParams() {
 	const list = await getAllSurat().then((r) => r.data ?? []);
-	return list.map((s: any) => ({ id: String(s.nomor) }));
+	return list.map((s: SurahSummary) => ({ id: String(s.nomor) }));
 }
 
 export default async function SurahPage({
@@ -32,6 +40,7 @@ export default async function SurahPage({
 
 	const surah = surahRes?.data;
 	const all = allRes?.data ?? [];
+
 	if (!surah) return notFound();
 
 	const surahIndex = all.findIndex((s) => s.nomor === surahId);
@@ -43,7 +52,7 @@ export default async function SurahPage({
 			<div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
 				{/* Sidebar (desktop) */}
 				<aside className="hidden lg:block">
-					<SurahSidebar list={all} activeId={Number(id)} />
+					<SurahSidebar list={all} activeId={surahId} />
 				</aside>
 
 				{/* Body */}

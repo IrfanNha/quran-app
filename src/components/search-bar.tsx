@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/select";
 import { BookOpen, Hash, MapPin, Search } from "lucide-react";
 import { SuratCard } from "./surah/surah-card";
+import { JUZ_MAP } from "@/constants/juz-map";
 
 export default function SearchBar({
 	initialSurahList,
@@ -26,7 +27,6 @@ export default function SearchBar({
 	const [filterNomor, setFilterNomor] = useState<string>("All");
 	const [query, setQuery] = useState<string>("");
 
-	// Fuse.js untuk search
 	const fuse = useMemo(
 		() =>
 			new Fuse<Surah>(initialSurahList, {
@@ -45,54 +45,19 @@ export default function SearchBar({
 	useEffect(() => {
 		let results: Surah[] = initialSurahList;
 
-		// filter tempat
-		if (filterTempat !== "All")
+		if (filterTempat !== "All") {
 			results = results.filter((s) => s.tempatTurun === filterTempat);
-
-		// filter nomor surah
-		if (filterNomor !== "All")
-			results = results.filter((s) => s.nomor === Number(filterNomor));
-
-		// filter Juz
-		if (filterJuz !== "All") {
-			const juzMap: Record<number, number[]> = {
-				1: [1, 2],
-				2: [2],
-				3: [2, 3],
-				4: [3, 4],
-				5: [4],
-				6: [4, 5],
-				7: [5, 6],
-				8: [6, 7],
-				9: [7, 8],
-				10: [8, 9],
-				11: [9, 10, 11],
-				12: [11, 12],
-				13: [12, 14],
-				14: [15, 16],
-				15: [17, 18],
-				16: [19, 20],
-				17: [21, 22],
-				18: [23, 25],
-				19: [26, 27],
-				20: [28, 29],
-				21: [30, 33],
-				22: [34, 36],
-				23: [37, 39],
-				24: [40, 41],
-				25: [42, 45],
-				26: [46, 51],
-				27: [52, 57],
-				28: [58, 66],
-				29: [67, 77],
-				30: [78, 114],
-			};
-			results = results.filter((s) =>
-				juzMap[Number(filterJuz)]?.includes(s.nomor)
-			);
 		}
 
-		// Fuse search
+		if (filterNomor !== "All") {
+			results = results.filter((s) => s.nomor === Number(filterNomor));
+		}
+
+		if (filterJuz !== "All") {
+			const juzSurah = JUZ_MAP[Number(filterJuz)] || [];
+			results = results.filter((s) => juzSurah.includes(s.nomor));
+		}
+
 		if (query) {
 			const found = fuse.search(query);
 			results = results.filter((s) =>
@@ -115,7 +80,6 @@ export default function SearchBar({
 					Filter berdasarkan nama surat, nomor, tempat turun, atau Juz
 				</p>
 
-				{/* Input Search */}
 				<div className="relative">
 					<Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
 					<Input
@@ -127,7 +91,6 @@ export default function SearchBar({
 					/>
 				</div>
 
-				{/* Filters */}
 				<div className="flex flex-wrap justify-center gap-4 mt-2">
 					{/* Tempat Turun */}
 					<Select
@@ -156,11 +119,13 @@ export default function SearchBar({
 						</SelectTrigger>
 						<SelectContent>
 							<SelectItem value="All">Semua Juz</SelectItem>
-							{[...Array(30)].map((_, i) => (
-								<SelectItem key={i + 1} value={`${i + 1}`}>
-									{i + 1}
-								</SelectItem>
-							))}
+							{Array.from({ length: 30 }, (_, i) => i + 1).map(
+								(juz) => (
+									<SelectItem key={juz} value={`${juz}`}>
+										{juz}
+									</SelectItem>
+								)
+							)}
 						</SelectContent>
 					</Select>
 

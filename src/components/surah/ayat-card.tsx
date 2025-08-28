@@ -29,7 +29,6 @@ export default function AyatCard({
 	arab,
 	latin,
 	indo,
-	audioUrl,
 	showLatin,
 	showTrans,
 	onPlay,

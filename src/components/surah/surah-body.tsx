@@ -127,7 +127,9 @@ export default function SurahBody({ surah }: { surah: SurahData }) {
 						<Label>Qari</Label>
 						<Select
 							value={qari}
-							onValueChange={(v) => setQari(v as any)}>
+							onValueChange={(v: keyof typeof QARI_MAP) =>
+								setQari(v)
+							}>
 							<SelectTrigger className="w-56">
 								<SelectValue placeholder="Pilih qari" />
 							</SelectTrigger>
