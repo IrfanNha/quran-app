@@ -6,6 +6,7 @@ import { useAudio } from "./audio-provider";
 import { Play, Pause, RotateCcw, X, ArrowUp } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import Link from "next/link";
+import { QARI_MAP } from "@/constants/qari-map";
 
 export function AudioBanner() {
 	const {
@@ -40,7 +41,8 @@ export function AudioBanner() {
 									<ArrowUp className="h-4 w-4 text-green-600 dark:text-green-400" />
 								</Link>
 								<span className="text-muted-foreground">
-									{currentTrack.qari}
+									{QARI_MAP[currentTrack.qari] ||
+										currentTrack.qari}
 								</span>
 							</div>
 						</div>

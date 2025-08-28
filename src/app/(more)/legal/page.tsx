@@ -26,7 +26,7 @@ export default function LegalPage() {
 						<CardTitle>Tujuan Penggunaan</CardTitle>
 						<CardDescription>
 							Aplikasi ini dibuat untuk tujuan edukasi dan
-							pembelajaran Al-Qur'an.
+							pembelajaran Al-Qur&apos;an.
 						</CardDescription>
 					</CardHeader>
 					<CardContent>
@@ -41,8 +41,8 @@ export default function LegalPage() {
 					<CardHeader>
 						<CardTitle>Sumber Data</CardTitle>
 						<CardDescription>
-							Semua teks Al-Qur'an, transliterasi, terjemahan, dan
-							audio diambil dari API{" "}
+							Semua teks Al-Qur&apos;an, transliterasi,
+							terjemahan, dan audio diambil dari API{" "}
 							<a
 								href="https://equran.id"
 								target="_blank"
@@ -69,8 +69,8 @@ export default function LegalPage() {
 					</CardHeader>
 					<CardContent>
 						Aplikasi ini tidak mengklaim kepemilikan konten
-						Al-Qur'an. Pengguna bertanggung jawab untuk menggunakan
-						konten sesuai dengan hukum dan etika.
+						Al-Qur&apos;an. Pengguna bertanggung jawab untuk
+						menggunakan konten sesuai dengan hukum dan etika.
 					</CardContent>
 				</Card>
 

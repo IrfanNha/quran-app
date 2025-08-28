@@ -6,8 +6,8 @@ interface Track {
 	surah: string;
 	qari: string;
 	url: string;
-	surahId?: number; // baru
-	ayatNumber?: number; // baru
+	surahId?: number;
+	ayatNumber?: number;
 }
 
 interface AudioContextProps {
@@ -54,9 +54,16 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 	const playTrack = (track: Track, idx?: number, onEnded?: () => void) => {
 		if (!audioRef.current) return;
 
+		const isSameTrack = currentTrack?.url === track.url;
+
+		if (isSameTrack) {
+			// Jika track sama, toggle play/pause
+			togglePlay();
+			return;
+		}
+
 		setCurrentTrack(track);
 		setCurrentIdx(idx ?? null);
-
 		audioRef.current.src = track.url;
 		audioRef.current.play();
 		setIsPlaying(true);
@@ -71,8 +78,10 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
 	const togglePlay = () => {
 		if (!audioRef.current) return;
+
 		if (isPlaying) audioRef.current.pause();
 		else audioRef.current.play();
+
 		setIsPlaying(!isPlaying);
 	};
 
@@ -87,10 +96,15 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 	};
 
 	const clearTrack = () => {
+		if (audioRef.current) {
+			audioRef.current.pause();
+			audioRef.current.src = "";
+		}
 		setCurrentTrack(null);
+		setCurrentIdx(null);
 		setIsPlaying(false);
-		audioRef.current?.pause();
-		audioRef.current = null;
+		setProgress(0);
+		setDuration(0);
 	};
 
 	return (

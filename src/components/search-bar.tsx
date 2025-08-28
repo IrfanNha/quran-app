@@ -3,7 +3,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import Fuse from "fuse.js";
 import type { Surah } from "@/types/quran";
-import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import {
 	Select,

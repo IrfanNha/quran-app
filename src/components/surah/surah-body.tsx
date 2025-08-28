@@ -1,4 +1,3 @@
-// src/components/surah/surah-body.tsx
 "use client";
 
 import * as React from "react";
@@ -19,7 +18,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { useAudio } from "../audio/audio-provider";
 import { QARI_MAP } from "@/constants/qari-map";
 import { cn } from "@/lib/utils";
-import { useBookmarkStore } from "@/store/useBookmarkStore";
 
 type SurahData = {
 	nomor: number;
@@ -41,62 +39,69 @@ type SurahData = {
 export default function SurahBody({ surah }: { surah: SurahData }) {
 	const [showLatin, setShowLatin] = React.useState(true);
 	const [showTrans, setShowTrans] = React.useState(true);
-	const [qari, setQari] = React.useState<"01" | "02" | "03" | "04" | "05">(
-		"05"
-	);
+	const [qari, setQari] = React.useState<keyof typeof QARI_MAP>("05");
 	const [tafsir, setTafsir] = React.useState<{
 		open: boolean;
 		ayat: number | null;
 	}>({ open: false, ayat: null });
 
-	const { currentIdx, isPlaying, playTrack, togglePlay } = useAudio();
-	const { bookmarks } = useBookmarkStore();
+	const { currentIdx, currentTrack, isPlaying, playTrack, togglePlay } =
+		useAudio();
 
-	// play per ayat
+	// Play per ayat
 	const handlePlayAyat = (idx: number) => {
+		const ayatUrl = surah.ayat[idx].audio[qari];
+
 		const nextAyat = () => {
 			const next = idx + 1;
 			if (next < surah.ayat.length) {
 				handlePlayAyat(next);
-				document
-					.getElementById(`ayah-${surah.ayat[next].nomorAyat}`)
-					?.scrollIntoView({ behavior: "smooth", block: "center" });
 			}
 		};
+
+		// Scroll ke ayat yang sedang diputar
+		setTimeout(() => {
+			document
+				.getElementById(`ayah-${surah.ayat[idx].nomorAyat}`)
+				?.scrollIntoView({ behavior: "smooth", block: "center" });
+		}, 100);
 
 		playTrack(
 			{
 				surah: surah.namaLatin,
-				qari: QARI_MAP[qari] || "Unknown Qari",
-				url: surah.ayat[idx].audio[qari],
-				surahId: surah.nomor, // tambahkan ini
-				ayatNumber: surah.ayat[idx].nomorAyat, // tambahkan ini
+				qari,
+				url: ayatUrl,
+				surahId: surah.nomor,
+				ayatNumber: idx + 1,
 			},
 			idx,
 			nextAyat
 		);
-
-		document
-			.getElementById(`ayah-${surah.ayat[idx].nomorAyat}`)
-			?.scrollIntoView({ behavior: "smooth", block: "center" });
 	};
 
-	// play/pause full audio
+	// Play/pause full audio
 	const handlePlayFull = () => {
-		if (isPlaying && currentIdx === null) {
+		const fullAudioUrl = surah.audioFull[qari];
+
+		if (currentTrack?.url === fullAudioUrl && isPlaying) {
 			togglePlay();
-		} else {
-			playTrack({
-				surah: surah.namaLatin,
-				qari: QARI_MAP[qari] || "Unknown Qari",
-				url: surah.audioFull[qari],
-			});
+			return;
 		}
+
+		playTrack(
+			{
+				surah: surah.namaLatin,
+				qari,
+				url: fullAudioUrl,
+				surahId: surah.nomor,
+			},
+			undefined, // undefined untuk full audio
+			undefined
+		);
 	};
 
 	return (
 		<div className="space-y-6">
-			{/* Controls */}
 			<div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
 				<div className="flex flex-wrap items-center gap-4">
 					{/* Transliterasi */}
@@ -127,21 +132,11 @@ export default function SurahBody({ surah }: { surah: SurahData }) {
 								<SelectValue placeholder="Pilih qari" />
 							</SelectTrigger>
 							<SelectContent>
-								<SelectItem value="01">
-									Abdullah Al-Juhany
-								</SelectItem>
-								<SelectItem value="02">
-									Abdul Muhsin Al-Qasim
-								</SelectItem>
-								<SelectItem value="03">
-									Abdurrahman As-Sudais
-								</SelectItem>
-								<SelectItem value="04">
-									Ibrahim Al-Dossari
-								</SelectItem>
-								<SelectItem value="05">
-									Misyari Rasyid Al-Afasy
-								</SelectItem>
+								{Object.entries(QARI_MAP).map(([key, name]) => (
+									<SelectItem key={key} value={key}>
+										{name}
+									</SelectItem>
+								))}
 							</SelectContent>
 						</Select>
 					</div>
@@ -150,7 +145,8 @@ export default function SurahBody({ surah }: { surah: SurahData }) {
 				{/* Play/Pause Full */}
 				<Button onClick={handlePlayFull} variant="outline">
 					<AnimatePresence mode="wait" initial={false}>
-						{isPlaying ? (
+						{isPlaying &&
+						currentTrack?.url === surah.audioFull[qari] ? (
 							<motion.div
 								key="pause"
 								initial={{ opacity: 0, y: -5 }}
@@ -179,38 +175,35 @@ export default function SurahBody({ surah }: { surah: SurahData }) {
 
 			{/* Daftar ayat */}
 			<div className="space-y-4">
-				{surah.ayat.map((a, idx) => {
-					const isActive = currentIdx === idx;
-					return (
-						<div
-							key={a.nomorAyat}
-							id={`ayah-${a.nomorAyat}`}
-							className={cn(
-								"transition-shadow duration-300 rounded-xl",
-								isActive
-									? "shadow-xl bg-yellow-50 dark:bg-yellow-900/30"
-									: "shadow-none bg-card hover:shadow-md hover:bg-yellow-50/10 dark:hover:bg-yellow-900/10"
-							)}>
-							<AyatCard
-								index={idx}
-								number={a.nomorAyat}
-								arab={a.teksArab}
-								latin={a.teksLatin}
-								indo={a.teksIndonesia}
-								audioUrl={a.audio[qari]}
-								showLatin={showLatin}
-								showTrans={showTrans}
-								onPlay={handlePlayAyat}
-								isPlaying={isActive}
-								onOpenTafsir={(no) =>
-									setTafsir({ open: true, ayat: no })
-								}
-								surahId={surah.nomor}
-								surahLatin={surah.namaLatin}
-							/>
-						</div>
-					);
-				})}
+				{surah.ayat.map((a, idx) => (
+					<div
+						key={a.nomorAyat}
+						className={cn(
+							"transition-shadow duration-300 rounded-xl",
+							currentIdx === idx
+								? "shadow-xl bg-yellow-50 dark:bg-yellow-900/30"
+								: "shadow-none bg-card"
+						)}
+						id={`ayah-${a.nomorAyat}`}>
+						<AyatCard
+							index={idx}
+							number={a.nomorAyat}
+							arab={a.teksArab}
+							latin={a.teksLatin}
+							indo={a.teksIndonesia}
+							audioUrl={a.audio[qari]}
+							showLatin={showLatin}
+							showTrans={showTrans}
+							onPlay={handlePlayAyat}
+							isPlaying={currentIdx === idx && isPlaying} // highlight aktif hanya jika ayat ini sedang diputar
+							onOpenTafsir={(no) =>
+								setTafsir({ open: true, ayat: no })
+							}
+							surahId={surah.nomor}
+							surahLatin={surah.namaLatin}
+						/>
+					</div>
+				))}
 			</div>
 
 			{/* Modal Tafsir */}

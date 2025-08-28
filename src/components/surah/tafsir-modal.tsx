@@ -29,7 +29,6 @@ export default function TafsirModal({
 }: Props) {
 	const [loading, setLoading] = React.useState(false);
 	const [text, setText] = React.useState<string | null>(null);
-	const mountedRef = React.useRef(false);
 
 	React.useEffect(() => {
 		if (!open) return;

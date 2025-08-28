@@ -1,11 +1,5 @@
 // src/lib/api.ts
-import {
-	ApiResponse,
-	Surah,
-	SurahDetail,
-	Tafsir,
-	TafsirResponse,
-} from "@/types/quran";
+import { ApiResponse, Surah, SurahDetail, TafsirResponse } from "@/types/quran";
 
 const BASE_URL = process.env.NEXT_PUBLIC_EQURAN_BASE!;
 
@@ -39,7 +33,6 @@ export async function getSurat(nomor: number) {
 
 // Get tafsir surat
 export async function getTafsir(id: string | number) {
-	const base = process.env.NEXT_PUBLIC_EQURAN_BASE!;
 	const res = await fetch(`${BASE_URL}/tafsir/${id}`, {
 		next: { revalidate: 60 * 60 * 24 },
 	});

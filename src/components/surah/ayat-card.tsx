@@ -4,7 +4,7 @@ import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { Copy, BookOpen, Bookmark, Play, Pause } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAudio } from "../audio/audio-provider";
+
 import { useBookmarkStore } from "@/store/useBookmarkStore";
 
 type Props = {

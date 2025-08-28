@@ -25,11 +25,11 @@ export default function AboutPage() {
 					<CardHeader>
 						<CardTitle>Tentang Aplikasi</CardTitle>
 						<CardDescription>
-							QuranApp adalah aplikasi pembelajaran Al-Qur'an
+							QuranApp adalah aplikasi pembelajaran Al-Qur&apos;an
 							berbasis web yang menyediakan teks Arab,
 							transliterasi Latin, terjemahan, dan audio qari.
 							Tujuannya adalah edukasi dan kemudahan akses belajar
-							Al-Qur'an.
+							Al-Qur&apos;an.
 						</CardDescription>
 					</CardHeader>
 					<CardContent>
