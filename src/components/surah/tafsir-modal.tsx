@@ -52,25 +52,32 @@ export default function TafsirModal({
 
 	return (
 		<Dialog open={open} onOpenChange={onOpenChange}>
-			<DialogContent className="sm:max-w-2xl w-full max-w-[calc(100%-2rem)] p-6 rounded-2xl">
-				<DialogHeader>
-					<DialogTitle className="flex items-center gap-2 text-lg font-semibold">
-						<BookOpen className="h-5 w-5" />
-						Tafsir {surahNameLatin} : Ayat {ayatNumber}
-					</DialogTitle>
-					<DialogDescription className="text-sm text-muted-foreground mt-1">
-						Tafsir per ayat dari {surahNameLatin}, ayat ke-
-						{ayatNumber}.
-					</DialogDescription>
-				</DialogHeader>
+			<DialogContent className="sm:max-w-3xl w-full max-w-[calc(100%-1.5rem)] p-6 sm:p-8 lg:py-6 rounded-2xl">
+				<DialogTitle className="flex items-center gap-3">
+					<BookOpen className="h-6 w-6 text-green-600 dark:text-green-400 flex-shrink-0" />
+					<div className="flex flex-col">
+						<span className="text-lg sm:text-xl font-semibold truncate">
+							{surahNameLatin}
+						</span>
+						<span className="text-sm sm:text-base text-muted-foreground">
+							Ayat {ayatNumber}
+						</span>
+					</div>
+				</DialogTitle>
+
+				<DialogDescription className="text-sm sm:text-base text-muted-foreground mt-2">
+					Tafsir per ayat dari {surahNameLatin}, ayat ke-{ayatNumber}.
+				</DialogDescription>
 
 				{loading ? (
-					<div className="flex items-center gap-2 text-muted-foreground mt-4">
-						<Loader2 className="h-4 w-4 animate-spin" />
-						Memuat tafsir...
+					<div className="flex items-center justify-center gap-2 text-muted-foreground mt-6">
+						<Loader2 className="h-5 w-5 animate-spin" />
+						<span className="text-sm sm:text-base">
+							Memuat tafsir...
+						</span>
 					</div>
 				) : (
-					<ScrollArea className="max-h-[70vh] pr-4 mt-4">
+					<ScrollArea className="max-h-[70vh] mt-4 pr-2 sm:pr-4">
 						<div className="prose prose-base prose-slate dark:prose-invert max-w-none whitespace-pre-wrap leading-relaxed text-sm sm:text-base">
 							{text}
 						</div>

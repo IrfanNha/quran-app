@@ -5,6 +5,7 @@ import SurahSidebar from "@/components/surah/surah-sidebar";
 import { Separator } from "@/components/ui/separator";
 import SurahNavigation from "@/components/surah/surah-navigation";
 import { BookOpen, MapPin } from "lucide-react";
+import ScrollManager from "@/components/surah/surah-scroll-manager";
 
 export const revalidate = 86400;
 
@@ -52,15 +53,16 @@ export default async function SurahPage({
 			<div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6">
 				{/* Sidebar (desktop) */}
 				<aside className="hidden lg:block">
-					<SurahSidebar list={all} activeId={surahId} />
+					<div className="sticky top-19">
+						<SurahSidebar list={all} activeId={surahId} />
+					</div>
 				</aside>
 
 				{/* Body */}
 				<div>
-					{/* Header ringkas */}
+					{/* Header*/}
 					<div className="rounded-2xl border bg-muted/30 p-5">
 						<div className="flex items-start justify-between">
-							{/* Kiri: nama latin & arti */}
 							<div className="min-w-0">
 								<h1 className="text-2xl font-bold break-words">
 									{surah.namaLatin}
@@ -88,7 +90,7 @@ export default async function SurahPage({
 					</div>
 
 					<Separator className="my-6" />
-
+					<ScrollManager />
 					<SurahBody surah={surah} />
 					<div className="pt-10">
 						<SurahNavigation

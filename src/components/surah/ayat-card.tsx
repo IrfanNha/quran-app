@@ -2,8 +2,9 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Copy, BookOpen, Bookmark, Play, Pause } from "lucide-react";
+import { Copy, BookOpen, Bookmark, Play, Pause, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 import { useBookmarkStore } from "@/store/useBookmarkStore";
 
@@ -21,6 +22,7 @@ type Props = {
 	onOpenTafsir: (ayat: number) => void;
 	surahId?: number;
 	surahLatin?: string;
+	hidePlayer?: boolean;
 };
 
 export default function AyatCard({
@@ -36,8 +38,10 @@ export default function AyatCard({
 	onOpenTafsir,
 	surahId,
 	surahLatin,
+	hidePlayer,
 }: Props) {
 	const [mounted, setMounted] = React.useState(false);
+	const [copied, setCopied] = React.useState(false);
 
 	React.useEffect(() => setMounted(true), []);
 
@@ -46,12 +50,15 @@ export default function AyatCard({
 			.filter(Boolean)
 			.join("\n");
 		await navigator.clipboard.writeText(parts);
+
+		// Tampilkan centang
+		setCopied(true);
+		setTimeout(() => setCopied(false), 1500);
 	};
 
 	const { addBookmark, removeBookmark, isBookmarked } = useBookmarkStore();
 
 	if (!mounted) {
-		// skeleton untuk SSR
 		return (
 			<article className="rounded-2xl border p-4 md:p-5">
 				<div className="h-10 bg-gray-200/50 rounded" />
@@ -77,7 +84,6 @@ export default function AyatCard({
 
 	return (
 		<article
-			id={`ayah-${number}`}
 			className={cn(
 				"rounded-2xl border p-4 md:p-5 transition-shadow duration-300",
 				isPlaying
@@ -92,18 +98,20 @@ export default function AyatCard({
 				</div>
 
 				<div className="flex items-center gap-1">
-					<Button
-						variant="ghost"
-						size="icon"
-						aria-label={isPlaying ? "Pause" : "Play"}
-						onClick={() => onPlay(index)}
-						title={isPlaying ? "Jeda" : "Putar ayat"}>
-						{isPlaying ? (
-							<Pause className="h-5 w-5" />
-						) : (
-							<Play className="h-5 w-5" />
-						)}
-					</Button>
+					{!hidePlayer && (
+						<Button
+							variant="ghost"
+							size="icon"
+							aria-label={isPlaying ? "Pause" : "Play"}
+							onClick={() => onPlay(index)}
+							title={isPlaying ? "Jeda" : "Putar ayat"}>
+							{isPlaying ? (
+								<Pause className="h-5 w-5" />
+							) : (
+								<Play className="h-5 w-5" />
+							)}
+						</Button>
+					)}
 
 					<Button
 						variant="ghost"
@@ -118,7 +126,27 @@ export default function AyatCard({
 						size="icon"
 						onClick={copyAyat}
 						title="Salin">
-						<Copy className="h-5 w-5" />
+						<AnimatePresence mode="wait" initial={false}>
+							{copied ? (
+								<motion.div
+									key="check"
+									initial={{ opacity: 0, scale: 0.5 }}
+									animate={{ opacity: 1, scale: 1 }}
+									exit={{ opacity: 0, scale: 0.5 }}
+									transition={{ duration: 0.2 }}>
+									<Check className="h-5 w-5 text-green-500" />
+								</motion.div>
+							) : (
+								<motion.div
+									key="copy"
+									initial={{ opacity: 0, scale: 0.5 }}
+									animate={{ opacity: 1, scale: 1 }}
+									exit={{ opacity: 0, scale: 0.5 }}
+									transition={{ duration: 0.2 }}>
+									<Copy className="h-5 w-5" />
+								</motion.div>
+							)}
+						</AnimatePresence>
 					</Button>
 
 					<Button

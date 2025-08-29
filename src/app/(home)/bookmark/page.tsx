@@ -5,9 +5,18 @@ import { useBookmarkStore } from "@/store/useBookmarkStore";
 import AyatCard from "@/components/surah/ayat-card";
 import { BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import TafsirModal from "@/components/surah/tafsir-modal";
+import Link from "next/link";
 
 export default function BookmarkPage() {
 	const { bookmarks } = useBookmarkStore();
+
+	const [tafsir, setTafsir] = React.useState<{
+		open: boolean;
+		ayat: number | null;
+		surahId?: number;
+		surahLatin?: string;
+	}>({ open: false, ayat: null });
 
 	return (
 		<div className="container mx-auto p-6">
@@ -30,20 +39,40 @@ export default function BookmarkPage() {
 								animate={{ opacity: 1, y: 0 }}
 								exit={{ opacity: 0, y: -10 }}
 								transition={{ duration: 0.2 }}>
-								<AyatCard
-									index={idx}
-									number={b.ayatNumber}
-									arab={b.arab}
-									latin={b.latin}
-									indo={b.indo}
-									showLatin={true}
-									showTrans={true}
-									onPlay={() => {}}
-									isPlaying={false}
-									onOpenTafsir={() => {}}
-									surahId={b.surahId}
-									surahLatin={b.surahLatin}
-								/>
+								<Link
+									href={`/surah/${b.surahId}#ayat-${b.surahId}-${b.ayatNumber}`}>
+									<AyatCard
+										index={idx}
+										number={b.ayatNumber}
+										arab={b.arab}
+										latin={b.latin}
+										indo={b.indo}
+										showLatin={true}
+										showTrans={true}
+										onPlay={() => {}}
+										isPlaying={false}
+										onOpenTafsir={() => {}}
+										surahId={b.surahId}
+										surahLatin={b.surahLatin}
+										hidePlayer
+									/>
+								</Link>
+								{tafsir.ayat != null &&
+									tafsir.surahId &&
+									tafsir.surahLatin && (
+										<TafsirModal
+											open={tafsir.open}
+											onOpenChange={(v) =>
+												setTafsir((s) => ({
+													...s,
+													open: v,
+												}))
+											}
+											surahId={tafsir.surahId}
+											ayatNumber={tafsir.ayat}
+											surahNameLatin={tafsir.surahLatin}
+										/>
+									)}
 							</motion.div>
 						))}
 					</div>
