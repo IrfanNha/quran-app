@@ -43,7 +43,7 @@ export function AudioBanner() {
 				key={currentTrack.url + minimized}
 				initial={hasMounted ? {} : { y: 100, opacity: 0 }}
 				animate={{ y: 0, opacity: 1 }}
-				exit={{ y: 100, opacity: 0 }}
+				exit={{ y: 0, opacity: 0 }}
 				transition={{ type: "spring", stiffness: 200, damping: 20 }}
 				className="fixed bottom-4 left-1/2 -translate-x-1/2 w-[95%] sm:w-[400px] rounded-2xl bg-background/90 backdrop-blur shadow-lg border p-4 flex flex-col gap-3 z-50">
 				{/* Minimized Mode*/}
