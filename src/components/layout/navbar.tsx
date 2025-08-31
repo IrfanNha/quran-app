@@ -9,6 +9,7 @@ import {
 	Info,
 	FileText,
 	ChevronDown,
+	BookAudio,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -62,6 +63,11 @@ export function Navbar() {
 							className="flex items-center gap-2 text-sm font-medium hover:text-green-600">
 							<Bookmark className="h-4 w-4" /> Bookmark
 						</Link>
+						<Link
+							href="/doa"
+							className="flex items-center gap-2 text-sm font-medium hover:text-green-600">
+							<BookAudio className="h-4 w-4" /> Doa
+						</Link>
 
 						{/* Dropdown Menu */}
 						<DropdownMenu>
@@ -69,7 +75,7 @@ export function Navbar() {
 								<Button
 									variant="ghost"
 									size="sm"
-									className="flex items-center">
+									className="flex items-center ">
 									<Info className="h-4 w-4" /> More{" "}
 									<ChevronDown className="h-4 w-4" />
 								</Button>
@@ -139,6 +145,11 @@ export function Navbar() {
 										className="flex items-center gap-3 text-lg font-medium hover:text-green-600">
 										<Bookmark className="h-5 w-5" />{" "}
 										Bookmark
+									</Link>
+									<Link
+										href="/doa"
+										className="flex items-center gap-3 text-lg font-medium hover:text-green-600">
+										<BookAudio className="h-5 w-5" /> Doa
 									</Link>
 
 									<div className="border-t border-muted-foreground/30 my-2" />

@@ -154,7 +154,7 @@ export default function SearchBar({
 				<h3 className="mb-4 text-center text-2xl font-semibold">
 					{filteredSurah.length} Surat Al-Quran
 				</h3>
-				<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
+				<div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
 					{filteredSurah.map((s) => (
 						<SuratCard key={s.nomor} surah={s} />
 					))}

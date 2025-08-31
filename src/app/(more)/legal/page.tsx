@@ -10,12 +10,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/layout/container";
-import { Mail } from "lucide-react";
+import { Mail, ShieldCheck } from "lucide-react";
 
 export default function LegalPage() {
 	return (
 		<Container className="py-12">
-			<h1 className="text-3xl font-bold mb-10 text-center">
+			<h1 className="text-3xl font-bold mb-10 text-center flex items-center justify-center gap-2">
+				<ShieldCheck className="w-8 h-8 text-green-600" />
 				Legal & Disclaimer
 			</h1>
 
@@ -74,18 +75,28 @@ export default function LegalPage() {
 					</CardContent>
 				</Card>
 
-				{/* Kredit */}
+				{/* Disclaimer Tracking & Analytics */}
 				<Card className="hover:shadow-lg transition-shadow duration-200">
 					<CardHeader>
-						<CardTitle>Kredit</CardTitle>
+						<CardTitle>Tracking & Analytics</CardTitle>
 						<CardDescription>
-							Terima kasih kepada pengembang API equran.id dan
-							komunitas open-source yang membantu pembuatan
-							aplikasi ini.
+							Aplikasi ini menggunakan layanan{" "}
+							<a
+								href="https://vercel.com/analytics"
+								target="_blank"
+								className="text-green-600 underline">
+								Vercel Analytics
+							</a>{" "}
+							untuk pemantauan trafik.
 						</CardDescription>
 					</CardHeader>
 					<CardContent>
-						Aplikasi ini dibuat oleh Irfan dengan tujuan edukasi.
+						<p>
+							Data yang dikumpulkan hanya berupa statistik
+							kunjungan dan pola penggunaan aplikasi secara
+							anonim. Tidak ada data pribadi pengguna yang
+							disimpan atau dibagikan ke pihak ketiga.
+						</p>
 					</CardContent>
 				</Card>
 

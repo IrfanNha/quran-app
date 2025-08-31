@@ -19,11 +19,11 @@ export default function BookmarkPage() {
 	}>({ open: false, ayat: null });
 
 	return (
-		<div className="container mx-auto p-6">
-			<div className="flex items-center gap-2 mb-6">
-				<BookOpen className="h-6 w-6 text-green-600 dark:text-green-400" />
-				<h1 className="text-2xl font-bold">Bookmark</h1>
-			</div>
+		<div className="container mx-auto p-6 py-12">
+			<h1 className="text-3xl font-bold mb-10 text-center flex items-center justify-center gap-2">
+				<BookOpen className="w-8 h-8 text-green-600" />
+				Bookmarks
+			</h1>
 
 			{!bookmarks.length ? (
 				<div className="text-center text-gray-500 py-20">

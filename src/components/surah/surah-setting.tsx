@@ -15,6 +15,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Play, Pause, Settings } from "lucide-react";
 import { QARI_MAP } from "@/constants/qari-map";
 import { useAudio } from "../audio/audio-provider";
+import { useUIStore } from "@/store/useSurahSettingStore";
 
 type SurahSettingsProps = {
 	showLatin: boolean;
@@ -40,9 +41,9 @@ export default function SurahSettings({
 	surah,
 }: SurahSettingsProps) {
 	const { currentTrack, isPlaying, playTrack, togglePlay } = useAudio();
-	const [open, setOpen] = React.useState(true);
 
-	// Play/pause full audio
+	const { surahSettingsOpen, setSurahSettingsOpen } = useUIStore();
+
 	const handlePlayFull = () => {
 		const fullAudioUrl = surah.audioFull[qari];
 		if (currentTrack?.url === fullAudioUrl && isPlaying) {
@@ -62,27 +63,27 @@ export default function SurahSettings({
 	};
 
 	return (
-		<div className="z-50 sticky top-19 right-4 ">
+		<div className="z-50 sticky top-19 right-4">
 			<AnimatePresence initial={false}>
 				{/* Panel Terbuka */}
-				{open && (
+				{surahSettingsOpen && (
 					<motion.div
 						key="open"
 						initial={{ opacity: 0, scale: 0.95, y: -10 }}
 						animate={{ opacity: 1, scale: 1, y: 0 }}
 						exit={{ opacity: 0, scale: 0.95, y: -10 }}
 						transition={{ duration: 0.25 }}
-						className="rounded-2xl border border-green-500 bg-muted/30 backdrop-blur-md p-5 flex flex-col  justify-between gap-4 shadow-lg">
+						className="rounded-2xl border border-green-500 bg-muted/30 backdrop-blur-md p-5 flex flex-col justify-between gap-4 shadow-lg">
 						{/* Tombol minimize */}
-						<div className="self-end  mb-2 md:mb-0">
+						<div className="self-end mb-2 md:mb-0">
 							<Button
 								size="sm"
 								variant="outline"
-								onClick={() => setOpen(false)}
+								onClick={() => setSurahSettingsOpen(false)}
 								className="flex items-center gap-1 border-green-500 text-green-600 dark:text-green-400">
 								<Settings className="w-4 h-4" />
 								<span className="text-sm font-medium">
-									Minimize
+									Perkecil
 								</span>
 							</Button>
 						</div>
@@ -98,6 +99,7 @@ export default function SurahSettings({
 									onCheckedChange={setShowLatin}
 								/>
 							</div>
+
 							{/* Terjemahan */}
 							<div className="flex items-center gap-2">
 								<Label htmlFor="trans">Terjemahan</Label>
@@ -107,6 +109,7 @@ export default function SurahSettings({
 									onCheckedChange={setShowTrans}
 								/>
 							</div>
+
 							{/* Qari */}
 							<div className="flex items-center gap-2">
 								<Label>Qari</Label>
@@ -131,6 +134,7 @@ export default function SurahSettings({
 									</SelectContent>
 								</Select>
 							</div>
+
 							<div className="flex items-center justify-end">
 								{/* Play/Pause Full */}
 								<Button
@@ -155,7 +159,7 @@ export default function SurahSettings({
 				)}
 
 				{/* Panel Minimized */}
-				{!open && (
+				{!surahSettingsOpen && (
 					<motion.div
 						key="closed"
 						initial={{ opacity: 0, scale: 0.6 }}
@@ -163,10 +167,11 @@ export default function SurahSettings({
 						exit={{ opacity: 0, scale: 0.6 }}
 						transition={{ duration: 0.25 }}
 						className="fixed top-19 right-4 rounded-full border border-green-500 bg-muted/40 backdrop-blur-md p-2 shadow-lg cursor-pointer flex items-center justify-center gap-1"
-						onClick={() => setOpen(true)}>
+						onClick={() => setSurahSettingsOpen(true)} // 🔥 simpan ke store
+					>
 						<Settings className="w-5 h-5 text-green-600 dark:text-green-400" />
 						<span className="text-sm font-medium text-green-600 dark:text-green-400">
-							Maximize
+							Perbesar
 						</span>
 					</motion.div>
 				)}
