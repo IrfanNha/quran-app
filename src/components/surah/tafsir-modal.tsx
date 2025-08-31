@@ -6,7 +6,6 @@ import {
 	Dialog,
 	DialogContent,
 	DialogDescription,
-	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
 import { Loader2, BookOpen } from "lucide-react";
