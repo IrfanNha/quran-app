@@ -39,24 +39,22 @@ export default function BookmarkPage() {
 								animate={{ opacity: 1, y: 0 }}
 								exit={{ opacity: 0, y: -10 }}
 								transition={{ duration: 0.2 }}>
-								<Link
-									href={`/surah/${b.surahId}#ayat-${b.surahId}-${b.ayatNumber}`}>
-									<AyatCard
-										index={idx}
-										number={b.ayatNumber}
-										arab={b.arab}
-										latin={b.latin}
-										indo={b.indo}
-										showLatin={true}
-										showTrans={true}
-										onPlay={() => {}}
-										isPlaying={false}
-										onOpenTafsir={() => {}}
-										surahId={b.surahId}
-										surahLatin={b.surahLatin}
-										hidePlayer
-									/>
-								</Link>
+								<AyatCard
+									index={idx}
+									number={b.ayatNumber}
+									arab={b.arab}
+									latin={b.latin}
+									indo={b.indo}
+									showLatin={true}
+									showTrans={true}
+									onPlay={() => {}}
+									isPlaying={false}
+									onOpenTafsir={() => {}}
+									surahId={b.surahId}
+									surahLatin={b.surahLatin}
+									show
+								/>
+
 								{tafsir.ayat != null &&
 									tafsir.surahId &&
 									tafsir.surahLatin && (

@@ -2,11 +2,23 @@
 
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { Copy, BookOpen, Bookmark, Play, Pause, Check } from "lucide-react";
+import {
+	Copy,
+	BookOpen,
+	Bookmark,
+	Play,
+	Pause,
+	Check,
+	Link2,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { useBookmarkStore } from "@/store/useBookmarkStore";
+import Link from "next/link";
+import { Label } from "../ui/label";
+import { Badge } from "../ui/badge";
+import { Separator } from "../ui/separator";
 
 type Props = {
 	index: number;
@@ -22,7 +34,7 @@ type Props = {
 	onOpenTafsir: (ayat: number) => void;
 	surahId?: number;
 	surahLatin?: string;
-	hidePlayer?: boolean;
+	show?: boolean;
 };
 
 export default function AyatCard({
@@ -38,7 +50,7 @@ export default function AyatCard({
 	onOpenTafsir,
 	surahId,
 	surahLatin,
-	hidePlayer,
+	show,
 }: Props) {
 	const [mounted, setMounted] = React.useState(false);
 	const [copied, setCopied] = React.useState(false);
@@ -90,6 +102,16 @@ export default function AyatCard({
 					? "shadow-xl bg-yellow-50 dark:bg-yellow-900/30"
 					: "bg-card"
 			)}>
+			{show && surahLatin && (
+				<>
+					<Badge className="px-2 py-1 border border-green-500 text-green-700 dark:text-green-400 dark:border-green-400 bg-transparent rounded-md text-sm font-medium">
+						{surahLatin} : {number}
+					</Badge>
+
+					<Separator className="my-3"></Separator>
+				</>
+			)}
+
 			<div className="flex items-start justify-between gap-3">
 				<div className="flex items-center gap-2">
 					<span className="inline-flex h-7 w-7 items-center justify-center rounded-full border-2 border-yellow-400/80 text-xs text-yellow-600">
@@ -98,7 +120,20 @@ export default function AyatCard({
 				</div>
 
 				<div className="flex items-center gap-1">
-					{!hidePlayer && (
+					{show && (
+						<Link
+							href={`/surah/${surahId}#ayat-${surahId}-${number}`}
+							title="Buka Ayat"
+							className="inline-block">
+							<Button
+								variant="outline" // tombol dengan border
+								className="flex items-center gap-2 border-gray-300 hover:border-green-400">
+								<Link2 className="h-5 w-5 text-gray-600" />
+								<span>Ke Ayat</span>
+							</Button>
+						</Link>
+					)}
+					{!show && (
 						<Button
 							variant="ghost"
 							size="icon"
