@@ -6,7 +6,6 @@ import AyatCard from "@/components/surah/ayat-card";
 import { BookOpen } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import TafsirModal from "@/components/surah/tafsir-modal";
-import Link from "next/link";
 
 export default function BookmarkPage() {
 	const { bookmarks } = useBookmarkStore();

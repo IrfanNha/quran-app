@@ -16,7 +16,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 import { useBookmarkStore } from "@/store/useBookmarkStore";
 import Link from "next/link";
-import { Label } from "../ui/label";
 import { Badge } from "../ui/badge";
 import { Separator } from "../ui/separator";
 
@@ -126,7 +125,7 @@ export default function AyatCard({
 							title="Buka Ayat"
 							className="inline-block">
 							<Button
-								variant="outline" // tombol dengan border
+								variant="outline"
 								className="flex items-center gap-2 border-gray-300 hover:border-green-400">
 								<Link2 className="h-5 w-5 text-gray-600" />
 								<span>Ke Ayat</span>
