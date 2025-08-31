@@ -11,6 +11,7 @@ import {
 	ArrowUp,
 	Maximize2,
 	Minimize2,
+	RotateCw,
 } from "lucide-react";
 import { Slider } from "@/components/ui/slider";
 import Link from "next/link";
@@ -179,7 +180,7 @@ export function AudioBanner() {
 								variant="ghost"
 								onClick={() => seek(10)}
 								aria-label="Maju 10 detik">
-								<RotateCcw className="h-5 w-5 rotate-180" />
+								<RotateCw className="h-5 w-5" />
 							</Button>
 						</div>
 					</>
