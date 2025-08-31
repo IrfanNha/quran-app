@@ -1,36 +1,163 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# QuranApp
 
-## Getting Started
+QuranApp adalah aplikasi web interaktif untuk membaca Al-Qur'an dengan fitur lengkap, termasuk audio per ayat, transliterasi Latin, terjemahan, bookmark, dan navigasi antar-surah. Dirancang dengan pengalaman pengguna profesional dan performa optimal.
 
-First, run the development server:
+---
+
+## Fitur Utama
+
+* Membaca Al-Qur'an dengan teks Arab, transliterasi Latin, dan terjemahan bahasa Indonesia.
+* Pemutar audio per ayat dengan kontrol play/pause, skip, dan seek.
+* Bookmark ayat favorit.
+* Navigasi cepat antar surah.
+* Sidebar dinamis untuk daftar surah.
+* Responsive dan mendukung mode desktop dan mobile.
+* Animasi dan interaksi halus menggunakan Framer Motion.
+* Offline-friendly (cache audio ringan).
+
+---
+
+## Teknologi
+
+* **Framework & Bahasa**: [Next.js](https://nextjs.org/) (App Router), [TypeScript](https://www.typescriptlang.org/)
+* **UI & Styling**: [Tailwind CSS](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), Radix UI
+* **State Management**: Zustand
+* **Audio & Interaksi**: HTML5 Audio API
+* **Animasi**: [Framer Motion](https://www.framer.com/motion/)
+* **Deployment & Analytics**: Vercel, optional Google Analytics
+
+---
+
+## Instalasi
+
+Clone repository:
+
+```bash
+git clone https://github.com/IrfanNha/quran-app.git
+cd quran-app
+```
+
+Install dependencies:
+
+```bash
+npm install
+# atau
+yarn install
+# atau
+pnpm install
+```
+
+---
+
+## Environment Variables
+
+Buat file `.env.local` di root project dan tambahkan konfigurasi API `equran.id`:
+
+```bash
+NEXT_PUBLIC_EQURAN_API_URL=https://equran.id/api
+NEXT_PUBLIC_EQURAN_API_KEY=your_api_key_here
+```
+
+* Ganti `your_api_key_here` dengan API key yang kamu dapat dari [equran.id](https://equran.id).
+* Prefix `NEXT_PUBLIC_` wajib agar bisa diakses dari client.
+* Setelah membuat file ini, restart development server:
 
 ```bash
 npm run dev
-# or
+# atau
 yarn dev
-# or
+# atau
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Menjalankan Aplikasi
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Jalankan server development:
 
-## Learn More
+```bash
+npm run dev
+# atau
+yarn dev
+# atau
+pnpm dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+Buka browser di [http://localhost:3000](http://localhost:3000).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Build production:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run build
+npm run start
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Struktur Folder
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+quran-app/
+├─ app/                # Halaman Next.js (App Router)
+│  ├─ page.tsx         # Halaman utama
+│  ├─ bookmark/        # Halaman Bookmark
+│  └─ surah/           # Halaman surah
+├─ components/         # UI components
+│  ├─ shared/          # Komponen reusable
+│  ├─ surah/           # Sidebar, body, navigation
+│  └─ audio/           # AudioBanner, AudioProvider
+├─ constants/          # Konstanta aplikasi (Qari map, dsb)
+├─ lib/                # Utils, API client
+├─ store/              # Zustand stores
+├─ styles/             # Global styling & Tailwind config
+└─ public/             # Assets statis
+```
+
+---
+
+## Contoh Penggunaan
+
+```tsx
+import { AudioProvider } from '@/components/audio/audio-provider';
+import AudioBanner from '@/components/audio/audio-banner';
+
+export default function App() {
+  return (
+    <AudioProvider>
+      <AudioBanner />
+      {/* Komponen lain */}
+    </AudioProvider>
+  );
+}
+```
+
+---
+
+## Best Practices
+
+* Audio player menggunakan HTML5 Audio API untuk performa ringan.
+* Sticky header dan sidebar untuk navigasi yang nyaman.
+* Lazy load surah dan ayat agar tetap ringan di client.
+* Gunakan Framer Motion untuk animasi halus tanpa mengorbankan performa.
+
+---
+
+## Deployment
+
+Disarankan menggunakan **[Vercel](https://vercel.com/new)**:
+
+1. Hubungkan repository GitHub.
+2. Build & deploy otomatis.
+3. Gunakan environment variables untuk konfigurasi audio atau analytics jika diperlukan.
+
+---
+
+## Lisensi
+
+MIT License © IrfanNha - IrfanWork
+
+---
+
+Dokumentasi ini dirancang agar mudah dipahami developer lain dan menjaga standar profesional.
+Untuk kontribusi atau pertanyaan, silakan buat pull request atau issue di repository.
