@@ -22,8 +22,8 @@ export function Footer() {
 							</span>
 						</Link>
 						<p className="text-gray-600 dark:text-gray-400 text-sm">
-							Aplikasi edukasi Al-Qur'an dengan teks, terjemahan,
-							audio, dan fitur bookmark.
+							Aplikasi edukasi Al-Qur&apos;an dengan teks,
+							terjemahan, audio, dan fitur bookmark.
 						</p>
 					</div>
 
