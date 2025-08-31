@@ -6,61 +6,20 @@ import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { ArrowRight, BookOpen } from "lucide-react";
 import TafsirModal from "../surah/tafsir-modal";
-import { getAllSurat, getSurat } from "@/lib/api";
-import { useRandomAyatStore, AyatRandom } from "@/store/useRandomAyatStore";
+import { useRandomAyatStore } from "@/store/useRandomAyatStore";
 import { toPng } from "html-to-image";
 
 export default function RandomAyatBanner() {
 	const router = useRouter();
-	const { ayat, date, setAyat } = useRandomAyatStore();
-	const [loading, setLoading] = React.useState(!ayat);
+	const { ayat, loading, fetchRandomAyat } = useRandomAyatStore();
 	const [tafsirOpen, setTafsirOpen] = React.useState(false);
 	const [countdown, setCountdown] = React.useState(0);
 	const bannerRef = React.useRef<HTMLDivElement>(null);
 
 	React.useEffect(() => {
-		const today = new Date().toISOString().split("T")[0];
-		if (date === today && ayat) {
-			setLoading(false);
-			return;
-		}
-
-		async function fetchRandomAyat() {
-			setLoading(true);
-			try {
-				const allSurah = (await getAllSurat()).data ?? [];
-				if (!allSurah.length) return;
-
-				const surah =
-					allSurah[Math.floor(Math.random() * allSurah.length)];
-				const surahDetail = await getSurat(surah.nomor);
-				const ayatList = surahDetail.data.ayat ?? [];
-				if (!ayatList.length) return;
-
-				const ayNo = Math.floor(Math.random() * ayatList.length);
-				const ayatData = ayatList[ayNo];
-
-				const randomAyat: AyatRandom = {
-					surahId: surah.nomor,
-					surahLatin: surah.namaLatin,
-					ayatNumber: ayatData.nomorAyat,
-					teksArab: ayatData.teksArab,
-					teksLatin: ayatData.teksLatin,
-					teksIndonesia: ayatData.teksIndonesia,
-				};
-
-				setAyat(randomAyat, today);
-			} catch (err) {
-				console.error("Failed to fetch random ayat", err);
-			} finally {
-				setLoading(false);
-			}
-		}
-
 		fetchRandomAyat();
-	}, [ayat, date, setAyat]);
+	}, [fetchRandomAyat]);
 
-	// Hitung countdown ke tengah malam
 	React.useEffect(() => {
 		const interval = setInterval(() => {
 			const now = new Date();
@@ -74,9 +33,9 @@ export default function RandomAyatBanner() {
 
 		return () => clearInterval(interval);
 	}, []);
-	const handleExportPNG = async () => {
-		if (!bannerRef.current || !ayat) return;
 
+	const handleExportPNG = React.useCallback(async () => {
+		if (!bannerRef.current || !ayat) return;
 		try {
 			const dataUrl = await toPng(bannerRef.current, {
 				filter: (node) => !(node instanceof HTMLButtonElement),
@@ -84,20 +43,18 @@ export default function RandomAyatBanner() {
 				backgroundColor:
 					window.getComputedStyle(bannerRef.current)
 						.backgroundColor || "#fff",
-				style: {
-					fontFamily: "'Poppins', sans-serif",
-				},
+				style: { fontFamily: "'Poppins', sans-serif" },
 			});
 			const link = document.createElement("a");
-			link.download = `QuranApp-RandomAyat-${ayat.surahLatin}-${ayat.ayatNumber}.png`;
 			link.href = dataUrl;
+			link.download = `QuranApp-RandomAyat-${ayat.surahLatin}-${ayat.ayatNumber}.png`;
 			link.click();
 		} catch (err) {
 			console.error("Failed to export banner as PNG", err);
 		}
-	};
+	}, [ayat]);
 
-	if (loading) {
+	if (loading || !ayat) {
 		return (
 			<div className="animate-pulse bg-green-100/50 p-6 rounded-2xl max-w-3xl mx-auto space-y-2">
 				<div className="h-6 w-3/4 bg-green-300 rounded" />
@@ -106,8 +63,6 @@ export default function RandomAyatBanner() {
 			</div>
 		);
 	}
-
-	if (!ayat) return null;
 
 	const hours = Math.floor(countdown / 1000 / 3600);
 	const minutes = Math.floor((countdown / 1000 / 60) % 60);
@@ -144,7 +99,7 @@ export default function RandomAyatBanner() {
 						size="sm"
 						onClick={() =>
 							router.push(
-								`/surah/${ayat.surahId}#ayat-${ayat.ayatNumber}`
+								`/surah/${ayat.surahId}#ayat-${ayat.surahId}-${ayat.ayatNumber}`
 							)
 						}>
 						<ArrowRight className="mr-1 h-4 w-4" /> Buka
@@ -173,7 +128,6 @@ export default function RandomAyatBanner() {
 					/>
 				)}
 
-				{/* Watermark */}
 				<div className="absolute bottom-2 right-2 text-xs text-green-600 dark:text-green-400 opacity-50">
 					QuranApp
 				</div>

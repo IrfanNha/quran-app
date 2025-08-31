@@ -62,7 +62,6 @@ export default function AyatCard({
 			.join("\n");
 		await navigator.clipboard.writeText(parts);
 
-		// Tampilkan centang
 		setCopied(true);
 		setTimeout(() => setCopied(false), 1500);
 	};
@@ -98,7 +97,7 @@ export default function AyatCard({
 			className={cn(
 				"rounded-2xl border p-4 md:p-5 transition-shadow duration-300",
 				isPlaying
-					? "shadow-xl bg-yellow-50 dark:bg-yellow-900/30"
+					? "shadow-xl bg-green-100/40 backdrop-blur dark:bg-green-900/30"
 					: "bg-card"
 			)}>
 			{show && surahLatin && (
