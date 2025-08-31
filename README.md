@@ -132,7 +132,7 @@ Disarankan menggunakan **[Vercel](https://vercel.com/new)**:
 
 ## Lisensi
 
-MIT License © [Nama Kamu]
+MIT License © IrfanNha - IrfanWork
 
 ---
 
